@@ -94,6 +94,9 @@ const Index = () => {
       </div>
       Suggested Movies
       <br />
+      <div>
+        <Link to="/add">Add Movie</Link>
+      </div>
       {isError && (
         <>
           <div
