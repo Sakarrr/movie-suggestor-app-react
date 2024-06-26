@@ -7,7 +7,7 @@ const Index = () => {
   const [searchMovieText, setSearchMovieText] = useState("");
   const [searchErrorText, setSearchErrorText] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [firstRun, setFirstRun] = useState(true);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
@@ -15,23 +15,25 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    // Searching code
-    const fetchTimer = setTimeout(() => {
-      if (searchMovieText && searchMovieText.length > 2) {
-        fetchMovies();
-      } else if (searchMovieText < 1) {
-        fetchMovies();
-      } else {
-        setSearchErrorText(
-          "Please error atleast 3 characters for search to run"
-        );
-      }
-    }, 2000);
+    if (!firstRun) {
+      // Searching code
+      const fetchTimer = setTimeout(() => {
+        if (searchMovieText && searchMovieText.length > 2) {
+          fetchMovies();
+        } else if (searchMovieText < 1) {
+          fetchMovies();
+        } else {
+          setSearchErrorText(
+            "Please error atleast 3 characters for search to run"
+          );
+        }
+      }, 2000);
 
-    // Clean up function
-    return () => {
-      clearTimeout(fetchTimer);
-    };
+      // Clean up function
+      return () => {
+        clearTimeout(fetchTimer);
+      };
+    }
   }, [searchMovieText]);
 
   const fetchMovies = async () => {
@@ -67,10 +69,12 @@ const Index = () => {
       setMovies(response.data.moviesData);
       setIsError(false);
       setLoading(false);
+      setFirstRun(false);
     } catch (errors) {
       console.log(errors);
       setIsError("Error");
       setLoading(false);
+      setFirstRun(false);
     }
   };
 
@@ -107,7 +111,7 @@ const Index = () => {
       <div style={{ background: "#e7e7e7", margin: "10px" }}>
         {loading && <>Loading</>}
         {/* eslint-disable-next-line */}
-        {movies < 1 ? (
+        {!loading && movies < 1 ? (
           <>No movies found</>
         ) : (
           <>
