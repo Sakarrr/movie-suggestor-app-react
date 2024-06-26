@@ -6,6 +6,7 @@ const Index = () => {
   const [movies, setMovies] = useState([]);
   const [searchMovieText, setSearchMovieText] = useState("");
   const [searchErrorText, setSearchErrorText] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [isError, setIsError] = useState(false);
 
@@ -34,6 +35,7 @@ const Index = () => {
   }, [searchMovieText]);
 
   const fetchMovies = async () => {
+    setLoading(true);
     setSearchErrorText("");
     // Fetch resource
     setIsError(false);
@@ -64,9 +66,11 @@ const Index = () => {
 
       setMovies(response.data.moviesData);
       setIsError(false);
+      setLoading(false);
     } catch (errors) {
       console.log(errors);
       setIsError("Error");
+      setLoading(false);
     }
   };
 
@@ -101,6 +105,7 @@ const Index = () => {
         </>
       )}
       <div style={{ background: "#e7e7e7", margin: "10px" }}>
+        {loading && <>Loading</>}
         {/* eslint-disable-next-line */}
         {movies < 1 ? (
           <>No movies found</>
