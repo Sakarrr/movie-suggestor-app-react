@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Index = () => {
   const [movies, setMovies] = useState([]);
@@ -65,7 +66,9 @@ const Index = () => {
         {/* eslint-disable-next-line */}
         {movies.map((el) => (
           <div key={el.id}>
-            <span style={{ fontWeight: "bold" }}>{el.name}</span>
+            <Link to={`/view_movie/${el.id}`}>
+              <span style={{ fontWeight: "bold" }}>{el.name}</span>
+            </Link>
             <br />
             <img src={el.image} alt={el.name} style={{ height: "100px" }}></img>
             <br />
