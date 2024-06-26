@@ -9,7 +9,6 @@ function App() {
   const fetchMovies = async () => {
     // Fetch resource
     setIsError(false);
-    console.log("Calling API");
     // const response = axios.get(
     //   "https://api.dynoacademy.com/test-api/v1/movies"
     // );
@@ -35,15 +34,11 @@ function App() {
         "https://api.dynoacademy.com/test-api/v1/movies"
       );
 
-      console.log(response);
       setMovies(response.data.moviesData);
       setIsError(false);
     } catch (err) {
       setIsError("Cannot fetch data!");
     }
-    console.log(movies);
-
-    console.log("Finish");
   };
 
   return (
@@ -69,7 +64,17 @@ function App() {
       <div style={{ background: "#e7e7e7", margin: "10px" }}>
         {/* eslint-disable-next-line */}
         {movies.map((el) => (
-          <div key={el.id}>{el.name}</div>
+          <div key={el.id}>
+            <span style={{ fontWeight: "bold" }}>{el.name}</span>
+            <br />
+            <img src={el.image} alt={el.name} style={{ height: "100px" }}></img>
+            <br />
+            {el.info}
+            <br />
+            Rating: {el.rating || "Not Rated"}
+            <br />
+            <br />
+          </div>
         ))}
       </div>
     </>
