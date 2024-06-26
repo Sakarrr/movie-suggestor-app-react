@@ -5,6 +5,7 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min";
 const Index = () => {
   const [movies, setMovies] = useState([]);
   const [searchMovieText, setSearchMovieText] = useState("");
+  const [searchErrorText, setSearchErrorText] = useState(false);
 
   const [isError, setIsError] = useState(false);
 
@@ -15,7 +16,15 @@ const Index = () => {
   useEffect(() => {
     // Searching code
     const fetchTimer = setTimeout(() => {
-      fetchMovies();
+      if (searchMovieText && searchMovieText.length > 2) {
+        fetchMovies();
+      } else if (searchMovieText < 1) {
+        fetchMovies();
+      } else {
+        setSearchErrorText(
+          "Please error atleast 3 characters for search to run"
+        );
+      }
     }, 2000);
 
     // Clean up function
@@ -25,6 +34,7 @@ const Index = () => {
   }, [searchMovieText]);
 
   const fetchMovies = async () => {
+    setSearchErrorText("");
     // Fetch resource
     setIsError(false);
     // const response = axios.get(
@@ -56,7 +66,7 @@ const Index = () => {
       setIsError(false);
     } catch (errors) {
       console.log(errors);
-      setIsError(errors.message);
+      setIsError("Error");
     }
   };
 
@@ -72,6 +82,7 @@ const Index = () => {
             setSearchMovieText(e.target.value);
           }}
         />
+        <span>{searchErrorText}</span>
       </div>
       Suggested Movies
       <br />
@@ -91,21 +102,32 @@ const Index = () => {
       )}
       <div style={{ background: "#e7e7e7", margin: "10px" }}>
         {/* eslint-disable-next-line */}
-        {movies.map((el) => (
-          <div key={el.id}>
-            <Link to={`/view_movie/${el.id}`}>
-              <span style={{ fontWeight: "bold" }}>{el.name}</span>
-            </Link>
-            <br />
-            <img src={el.image} alt={el.name} style={{ height: "100px" }}></img>
-            <br />
-            {el.info}
-            <br />
-            Rating: {el.rating || "Not Rated"}
-            <br />
-            <br />
-          </div>
-        ))}
+        {movies < 1 ? (
+          <>No movies found</>
+        ) : (
+          <>
+            {" "}
+            {movies.map((el) => (
+              <div key={el.id}>
+                <Link to={`/view_movie/${el.id}`}>
+                  <span style={{ fontWeight: "bold" }}>{el.name}</span>
+                </Link>
+                <br />
+                <img
+                  src={el.image}
+                  alt={el.name}
+                  style={{ height: "100px" }}
+                ></img>
+                <br />
+                {el.info}
+                <br />
+                Rating: {el.rating || "Not Rated"}
+                <br />
+                <br />
+              </div>
+            ))}
+          </>
+        )}
       </div>
     </>
   );
