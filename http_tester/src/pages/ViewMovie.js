@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const ViewMovie = () => {
@@ -7,6 +7,19 @@ const ViewMovie = () => {
   const getID = getParams.id;
 
   const [movie, setMovie] = useState({});
+
+  // First time component render
+  useEffect(() => {
+    getSingleMovieInfo();
+  }, []);
+
+  // Everytime each component is updated
+  // useEffect(()=>{})
+
+  // Each time dependencies are updated / changed
+  // useEffect(() => {
+  //   console.log("First time run");
+  // }, [movie]);
 
   const getSingleMovieInfo = async () => {
     try {

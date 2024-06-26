@@ -1,11 +1,15 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Index = () => {
   const [movies, setMovies] = useState([]);
 
   const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
 
   const fetchMovies = async () => {
     // Fetch resource
@@ -44,9 +48,8 @@ const Index = () => {
 
   return (
     <>
-      <button onClick={fetchMovies}>Get all movies</button>
+      Suggested Movies
       <br />
-
       {isError && (
         <>
           <div
@@ -61,7 +64,6 @@ const Index = () => {
           </div>
         </>
       )}
-
       <div style={{ background: "#e7e7e7", margin: "10px" }}>
         {/* eslint-disable-next-line */}
         {movies.map((el) => (
