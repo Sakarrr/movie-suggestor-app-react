@@ -7,6 +7,7 @@ import {
 import Index from "../pages/Index";
 import ViewMovie from "../pages/ViewMovie";
 import AddMovie from "../pages/AddMovie";
+import Login from "../pages/Login";
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
         <Route path="/" component={Index} exact></Route>
         <Route path="/view_movie/:id" component={ViewMovie} exact></Route>
         <Route path="/add" component={AddMovie} exact></Route>
+        <Route path="/login" component={Login} exact></Route>
       </Switch>
     </BrowserRouter>
   );
