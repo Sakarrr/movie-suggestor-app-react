@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useRef } from "react";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Login = () => {
   const email = useRef();
   const password = useRef();
+  const history = useHistory();
 
   const onLoginHandler = async (e) => {
     e.preventDefault();
@@ -20,7 +21,9 @@ const Login = () => {
         { timeout: 10000 }
       );
       if (response.data.status === "success") alert("Logged In Successfully");
-      console.log(response);
+      const getAccessToken = response.data.accessToken;
+      localStorage.setItem("accessToken", getAccessToken);
+      history.replace("/");
     } catch (err) {
       if (err.response) alert(err.response.data.errors[0].message);
       else alert("Unknown error occured!");

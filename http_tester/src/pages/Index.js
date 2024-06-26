@@ -95,8 +95,16 @@ const Index = () => {
       Suggested Movies
       <br />
       <div>
-        <Link to="/add">Add Movie</Link> | 
-        <Link to="/login">Login</Link>
+        <Link to="/add">Add Movie</Link> |{" "}
+        {localStorage.getItem("accessToken") ? (
+          <>
+            <Link to="/profile">Profile</Link>
+          </>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+          </>
+        )}
       </div>
       {isError && (
         <>
