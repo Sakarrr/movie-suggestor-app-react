@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useRef } from "react";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const AddMovie = () => {
+  const history = useHistory();
   const movie_name_reference = useRef();
   const movie_rating_reference = useRef();
   const movie_description_reference = useRef();
@@ -18,11 +19,14 @@ const AddMovie = () => {
     try {
       const response = await axios.post(
         "https://api.dynoacademy.com/test-api/v1/movies",
-        movieData
+        movieData,
+        { timeout: 10000 }
       );
-      console.log(response.data.message);
+      alert(response.data.message);
+      history.replace("/");
     } catch (err) {
-      alert("Error adding movie");
+      if (err.response) alert(err.response.data.errors[0].message);
+      else alert("Unknown error occured!");
     }
   };
   return (
