@@ -14,7 +14,14 @@ const Index = () => {
 
   useEffect(() => {
     // Searching code
-    fetchMovies();
+    const fetchTimer = setTimeout(() => {
+      fetchMovies();
+    }, 2000);
+
+    // Clean up function
+    return () => {
+      clearTimeout(fetchTimer);
+    };
   }, [searchMovieText]);
 
   const fetchMovies = async () => {
@@ -47,8 +54,9 @@ const Index = () => {
 
       setMovies(response.data.moviesData);
       setIsError(false);
-    } catch (err) {
-      setIsError("Cannot fetch data!");
+    } catch (errors) {
+      console.log(errors);
+      setIsError(errors.message);
     }
   };
 
