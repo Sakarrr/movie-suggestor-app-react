@@ -28,12 +28,16 @@ function App() {
     //     })
     //     .catch((error) => {});
 
-    const response = await axios.get(
-      "https://api.dynoacademy.com/test-api/v1/movies"
-    );
+    try {
+      const response = await axios.get(
+        "https://api.dynoacademy.com/test-api/v2/movies"
+      );
 
-    console.log(response);
-    setMovies(response.data.moviesData);
+      console.log(response);
+      setMovies(response.data.moviesData);
+    } catch (err) {
+      alert("Cannot fetch data!");
+    }
     console.log(movies);
 
     console.log("Finish");
