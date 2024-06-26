@@ -4,12 +4,18 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 const Index = () => {
   const [movies, setMovies] = useState([]);
+  const [searchMovieText, setSearchMovieText] = useState("");
 
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     fetchMovies();
   }, []);
+
+  useEffect(() => {
+    // Searching code
+    fetchMovies();
+  }, [searchMovieText]);
 
   const fetchMovies = async () => {
     // Fetch resource
@@ -36,7 +42,7 @@ const Index = () => {
 
     try {
       const response = await axios.get(
-        "https://api.dynoacademy.com/test-api/v1/movies"
+        `https://api.dynoacademy.com/test-api/v1/movies?search=${searchMovieText}`
       );
 
       setMovies(response.data.moviesData);
@@ -48,6 +54,17 @@ const Index = () => {
 
   return (
     <>
+      <div>
+        <input
+          type="text"
+          value={searchMovieText}
+          placeholder="Type movie title"
+          onChange={(e) => {
+            e.preventDefault();
+            setSearchMovieText(e.target.value);
+          }}
+        />
+      </div>
       Suggested Movies
       <br />
       {isError && (
