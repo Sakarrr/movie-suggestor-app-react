@@ -37,6 +37,7 @@ const Index = () => {
         clearTimeout(fetchTimer);
       };
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchMovieText]);
 
   const fetchMovies = async () => {

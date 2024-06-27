@@ -13,6 +13,7 @@ const ViewMovie = () => {
   // First time component render
   useEffect(() => {
     getSingleMovieInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Everytime each component is updated

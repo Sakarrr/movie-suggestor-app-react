@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRef, useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import MovieNavBar from "../components/MovieNavbar";
-import { Button, Container, Form, Modal, Spinner } from "react-bootstrap";
+import { Button, Container, Form, Modal } from "react-bootstrap";
 
 const Login = () => {
   const email = useRef();
