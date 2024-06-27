@@ -1,11 +1,14 @@
 import axios from "axios";
-import { useRef } from "react";
-import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useRef, useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import MovieNavBar from "../components/MovieNavbar";
+import { Button, Container, Form, Modal, Spinner } from "react-bootstrap";
 
 const Login = () => {
   const email = useRef();
   const password = useRef();
   const history = useHistory();
+  const [modalState, setModalState] = useState(false);
 
   const onLoginHandler = async (e) => {
     e.preventDefault();
@@ -20,25 +23,76 @@ const Login = () => {
         loginData,
         { timeout: 10000 }
       );
-      if (response.data.status === "success") alert("Logged In Successfully");
-      const getAccessToken = response.data.accessToken;
-      localStorage.setItem("accessToken", getAccessToken);
-      history.replace("/");
+      if (response.data.status === "success") {
+        setModalState(`Logged In Successfully. Redirecting....`);
+        const getAccessToken = response.data.accessToken;
+        localStorage.setItem("accessToken", getAccessToken);
+        setTimeout(() => {
+          history.replace("/");
+        }, 2000);
+      }
     } catch (err) {
-      if (err.response) alert(err.response.data.errors[0].message);
-      else alert("Unknown error occured!");
+      if (err.response) setModalState(err.response.data.errors[0].message);
+      else setModalState(true);
     }
   };
   return (
     <>
-      <Link to="/">Home</Link>
-      <form onSubmit={onLoginHandler}>
-        Email:
-        <input type="text" ref={email} /> <br />
-        Password:
-        <input type="password" ref={password} /> <br />
-        <button>Login</button>
-      </form>
+      <MovieNavBar />
+      <Container className="mt-3">
+        <h2 className="mb-3">Login Screen</h2>
+        <form onSubmit={onLoginHandler}>
+          <Form.Group className="mb-3">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              ref={email}
+              autoComplete={false}
+            />
+            <Form.Text className="text-muted">
+              We'll never share your email with anyone else.
+            </Form.Text>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              ref={password}
+              autoComplete={false}
+            />
+            <Form.Text className="text-muted"></Form.Text>
+          </Form.Group>
+
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </form>
+      </Container>
+
+      <Modal
+        show={modalState}
+        onHide={() => {
+          setModalState(false);
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Login Failed</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="text-center">{modalState}</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="danger"
+            onClick={() => {
+              setModalState(false);
+            }}
+          >
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

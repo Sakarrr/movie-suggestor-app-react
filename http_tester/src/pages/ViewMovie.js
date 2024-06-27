@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import MovieNavBar from "../components/MovieNavbar";
+import { Card, Container } from "react-bootstrap";
 
 const ViewMovie = () => {
   const getParams = useParams();
@@ -34,24 +36,25 @@ const ViewMovie = () => {
 
   return (
     <>
-      View Movie {getID}
-      <button onClick={getSingleMovieInfo}>View this movie details</button>
-      <br />
-      <br />
-      <div>
-        <img
-          src={movie.image}
-          alt={movie.name}
-          style={{ height: "100px" }}
-        ></img>{" "}
+      <MovieNavBar />
+      <Container>
         <br />
-        {movie.name}
-        <br />
-        {movie.desc}
-        <br />
-        Rating: {movie.rating}
-        <br />
-      </div>
+        <div>
+          <h1> {movie.name}</h1>
+          <Card>
+            <Card.Img
+              variant="top"
+              src={movie.image}
+              className="img-thumbnail rounded mx-auto d-block"
+              style={{ maxWidth: "300px" }}
+            />
+            <Card.Body>
+              <Card.Text>{movie.desc}</Card.Text>
+              <Card.Text>Rating: {movie.rating}</Card.Text>
+            </Card.Body>
+          </Card>
+        </div>
+      </Container>
     </>
   );
 };

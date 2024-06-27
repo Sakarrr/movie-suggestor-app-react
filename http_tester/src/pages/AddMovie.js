@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useRef } from "react";
 import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import MovieNavBar from "../components/MovieNavbar";
+import { Button, Container, Form } from "react-bootstrap";
 
 const AddMovie = () => {
   const history = useHistory();
@@ -31,31 +33,45 @@ const AddMovie = () => {
   };
   return (
     <>
-      <Link to="/">Home</Link>
-      <br />
-      <br />
-      <form onSubmit={addMovieHandler}>
-        Movie name:
-        <br />
-        <input type="text" placeholder="Name" ref={movie_name_reference} />{" "}
-        <br />
-        <br />
-        Rating:
-        <br />
-        <input
-          type="text"
-          placeholder="Rating"
-          ref={movie_rating_reference}
-        />{" "}
-        <br />
-        <br />
-        Description:
-        <br />
-        <textarea placeholder="Description" ref={movie_description_reference} />
-        <br />
-        <br />
-        <button type="submit">Add a Movie</button>
-      </form>
+      <MovieNavBar />
+      <Container className="mt-3">
+        <h3>Add Movie</h3>
+        <form onSubmit={addMovieHandler}>
+          <Form.Group className="mb-3">
+            <Form.Label>Movie name:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Movie Name"
+              ref={movie_name_reference}
+              autoComplete={false}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label> Rating:</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Rating"
+              ref={movie_rating_reference}
+              autoComplete={false}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Description:</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              ref={movie_description_reference}
+              autoComplete={false}
+            />
+          </Form.Group>
+
+          <Button variant="primary" type="submit">
+            Add Movie
+          </Button>
+        </form>
+      </Container>
     </>
   );
 };

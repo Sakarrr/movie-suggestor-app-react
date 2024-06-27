@@ -1,10 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import MovieNavBar from "../components/MovieNavbar";
+import { Button, Container, Modal } from "react-bootstrap";
 
 const Profile = () => {
   const history = useHistory();
   const [userData, setUserData] = useState({});
+  const [modalState, setModalState] = useState(false);
 
   useEffect(() => {
     getProfile();
@@ -35,14 +38,49 @@ const Profile = () => {
   };
   return (
     <>
-      <Link to="/">Home</Link>
-      {userData.name}
-      <br />
-      {userData.email}
-      <br />
-      {userData.country}
-      <br />
-      <button onClick={onLogoutHandler}>Logout</button>
+      <MovieNavBar />
+      <Container className="mt-4">
+        {userData.name}
+        <br />
+        {userData.email}
+        <br />
+        {userData.country}
+        <br />
+        <br />
+        <Button
+          onClick={() => {
+            setModalState(true);
+          }}
+          variant="danger"
+          type="button"
+        >
+          Logout
+        </Button>
+      </Container>
+
+      <Modal
+        show={modalState}
+        onHide={() => {
+          setModalState(false);
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure you want to LogOut?</Modal.Title>
+        </Modal.Header>
+        <Modal.Footer className="text-center">
+          <Button variant="danger" onClick={onLogoutHandler}>
+            Yes
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => {
+              setModalState(false);
+            }}
+          >
+            No
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

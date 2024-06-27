@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import MovieNavBar from "../components/MovieNavbar";
+import SingleMovie from "../components/SingleMovie";
+import { Container, Form, Row, Spinner } from "react-bootstrap";
 
 const Index = () => {
   const [movies, setMovies] = useState([]);
@@ -12,6 +14,7 @@ const Index = () => {
 
   useEffect(() => {
     fetchMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const Index = () => {
             "Please error atleast 3 characters for search to run"
           );
         }
-      }, 2000);
+      }, 1000);
 
       // Clean up function
       return () => {
@@ -80,76 +83,62 @@ const Index = () => {
 
   return (
     <>
-      <div>
-        <input
-          type="text"
-          value={searchMovieText}
-          placeholder="Type movie title"
-          onChange={(e) => {
-            e.preventDefault();
-            setSearchMovieText(e.target.value);
-          }}
-        />
-        <span>{searchErrorText}</span>
-      </div>
-      Suggested Movies
-      <br />
-      <div>
-        <Link to="/add">Add Movie</Link> |{" "}
-        {localStorage.getItem("accessToken") ? (
+      <MovieNavBar />
+      <Container className="my-4">
+        <div>
+          <Form.Group className="my-3">
+            <Form.Control
+              type="text"
+              value={searchMovieText}
+              placeholder="Type movie title"
+              onChange={(e) => {
+                e.preventDefault();
+                setSearchMovieText(e.target.value);
+              }}
+              autoComplete={false}
+            />
+            <Form.Text className="text-muted"></Form.Text>
+          </Form.Group>
+
+          <span>{searchErrorText}</span>
+        </div>
+        <div></div>
+        {isError && (
           <>
-            <Link to="/profile">Profile</Link>
-          </>
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-          </>
-        )}
-      </div>
-      {isError && (
-        <>
-          <div
-            style={{
-              background: "red",
-              color: "#fff",
-              padding: "10px",
-              margin: "5px",
-            }}
-          >
-            {isError}
-          </div>
-        </>
-      )}
-      <div style={{ background: "#e7e7e7", margin: "10px" }}>
-        {loading && <>Loading</>}
-        {/* eslint-disable-next-line */}
-        {!loading && movies < 1 ? (
-          <>No movies found</>
-        ) : (
-          <>
-            {" "}
-            {movies.map((el) => (
-              <div key={el.id}>
-                <Link to={`/view_movie/${el.id}`}>
-                  <span style={{ fontWeight: "bold" }}>{el.name}</span>
-                </Link>
-                <br />
-                <img
-                  src={el.image}
-                  alt={el.name}
-                  style={{ height: "100px" }}
-                ></img>
-                <br />
-                {el.info}
-                <br />
-                Rating: {el.rating || "Not Rated"}
-                <br />
-                <br />
-              </div>
-            ))}
+            <div
+              style={{
+                background: "red",
+                color: "#fff",
+                padding: "10px",
+                margin: "5px",
+              }}
+            >
+              {isError}
+            </div>
           </>
         )}
-      </div>
+        <div>
+          {loading && (
+            <div className="text-center mt-10">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </div>
+          )}
+          {/* eslint-disable-next-line */}
+          {!loading && movies < 1 ? (
+            <>No movies found</>
+          ) : (
+            <>
+              <Row>
+                {movies.map((el) => (
+                  <SingleMovie data={el} />
+                ))}
+              </Row>
+            </>
+          )}
+        </div>
+      </Container>
     </>
   );
 };
